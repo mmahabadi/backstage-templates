@@ -46,14 +46,10 @@ spec:
       name: Publish
       action: publish:github
       input:
-        allowHosts: 
-          - github.com
         description: This is ${{ parameters.component_id }}
         repoUrl: github.com?owner=mmahabadi&repo=${{ parameters.component_id }}
         protectDefaultBranch: false
-        # repoUrl: ${{ steps.fetchBase.output.repoUrl }}
-        # defaultBranch: 'main'
-        catalogInfoPath: '/catalog-info.yaml'
+        defaultBranch: main
 
     - id: register
       name: Register
