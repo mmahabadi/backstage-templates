@@ -47,10 +47,12 @@ spec:
       action: publish:github
       input:
         allowHosts: 
-        - github.com
+          - github.com
         description: This is ${{ parameters.component_id }}
-        repoUrl: ${{ steps.fetchBase.output.repoUrl }}
-        defaultBranch: 'main'
+        repoUrl: github.com?owner=mmahabadi&repo=${{ parameters.component_id }}
+        protexctDefaultBranch: true
+        # repoUrl: ${{ steps.fetchBase.output.repoUrl }}
+        # defaultBranch: 'main'
         catalogInfoPath: '/catalog-info.yaml'
 
     - id: register
