@@ -50,6 +50,7 @@ spec:
         repoUrl: github.com?owner=mohsen-cicd-org-test&repo=${{ parameters.component_id }}
         protectDefaultBranch: false
         defaultBranch: main
+        repoVisibility: public # or 'internal' or 'private'
 
     - id: register
       name: Register
