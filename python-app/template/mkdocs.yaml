@@ -1,0 +1,9 @@
+site_name: CI/CD Python App
+site_description: Documentation for the CI/CD Python App project
+repo_url: https://github.com/mmahabadi/ci-cd
+
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

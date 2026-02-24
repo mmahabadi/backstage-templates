@@ -1,0 +1,5 @@
+services:
+  run-app:
+    build: ./
+    ports:
+      - 8080:5000
