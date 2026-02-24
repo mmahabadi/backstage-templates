@@ -1,4 +1,4 @@
-name: cicd
+name: ${{ values.app_name }}-cicd
 
 on:
   push:
