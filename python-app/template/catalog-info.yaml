@@ -8,3 +8,4 @@ metadata:
 spec:
   type: service
   owner: development
+  lifecycle: experimental
