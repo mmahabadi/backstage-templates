@@ -80,10 +80,10 @@ jobs:
           --repo $repo_url \
           --path charts/${{ values.app_name }} \
           --dest-namespace ${{ values.app_name }}-${{ values.app_env }} \
-          --dest-server https://kubernetes.default.svc
-          --values values-${{ values.app_env }}.yaml
-          --revision main
-          --sync-policy manual
+          --dest-server https://kubernetes.default.svc \
+          --values values-${{ values.app_env }}.yaml \
+          --revision main \
+          --sync-policy manual \
           --sync-option CreateNamespace=true
 
       - name: ArgoCD sync app
