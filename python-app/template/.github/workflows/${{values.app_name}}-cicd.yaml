@@ -61,11 +61,30 @@ jobs:
           sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
           rm argocd-linux-amd64
 
-      - name: ArgoCD app sync
+      - name: ArgoCD login
         run: | 
           argocd login argocd-server.argocd \
           --insecure \
           --username admin \
           --password ${{ '${{ secrets.ARGOCD_PASSWORD }}' }}
+
+      - name: Ensure argocd repo and app are added
+        run: |
+          # Connect the argocd repo
+          repo_url="https://github.com/mohsen-cicd-org-test/${{ values.app_name }}.git"
+          argocd repo list | grep -q "$repo_url" || argocd repo add $repo_url
+
+          # Add the argocd app
+          argocd app list | grep -q "${{ values.app_name }}" || 
+          argocd app create ${{ values.app_name }} \
+          --repo $repo_url \
+          --path charts/${{ values.app_name }} \
+          --dest-namespace ${{ values.app_name }}-${{ values.app_env }} \
+          --dest-server https://kubernetes.default.svc
+          --values values-${{ values.app_env }}.yaml
+          --revision main
+          --sync-policy manual
+          --sync-option CreateNamespace=true
+
       - name: ArgoCD sync app
         run: argocd app sync ${{ values.app_name }}
