@@ -47,7 +47,7 @@ spec:
       action: publish:github
       input:
         description: This is ${{ parameters.component_id }}
-        repoUrl: github.com?owner=mmahabadi&repo=${{ parameters.component_id }}
+        repoUrl: github.com?owner=mohsen-cicd-org-test&repo=${{ parameters.component_id }}
         protectDefaultBranch: false
         defaultBranch: main
 
