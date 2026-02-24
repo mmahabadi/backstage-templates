@@ -7,7 +7,7 @@ replicaCount: 1
 
 # Namespace
 namespace:
-  name: cicd-app
+  name: ${{ values.app_name }}-${{ values.app_env }}
   create: true  # Create namespace if it doesn't exist
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
@@ -16,7 +16,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ci-cd
+  tag: ${{ values.app_name }}-${{ values.app_env }}-latest
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets:
@@ -62,7 +62,7 @@ ingress:
           pathType: Prefix
           backend:
             service:
-              name: cicd-service
+              name: ${{ values.app_name }}-service
               port:
                 number: 8080
   tls: []

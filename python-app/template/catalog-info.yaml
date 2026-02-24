@@ -5,6 +5,7 @@ metadata:
   description: Python app that displays time, named ${{ values.app_name }}
   annotations:
     github.com/project-slug: mmahabadi/${{ values.app_name }}
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   owner: development

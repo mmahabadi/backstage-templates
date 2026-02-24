@@ -1,4 +1,4 @@
-# CI/CD Python App
+# CI/CD ${{ values.app_name }} App
 
 A simple Flask application demonstrating a complete CI/CD pipeline with GitHub Actions, Docker, Helm, ArgoCD, and Kubernetes.
 
@@ -61,15 +61,15 @@ Defined in `.github/workflows/cicd.yaml`, triggered on push to `main` when files
 1. Generates a short commit ID (first 6 chars of SHA)
 2. Logs into Docker Hub using repository secrets
 3. Builds a multi-arch Docker image (`linux/amd64` + `linux/arm64`)
-4. Pushes to `docker.io/mehabadi/test:cicd-app-<commit-id>`
+4. Pushes to `docker.io/mehabadi/test:${{ values.app_name }}-<commit-id>`
 
 ### CD Job (Self-hosted runner)
 
 1. Installs `yq` for YAML manipulation
 2. Checks out the repository
-3. Updates `charts/python-app/values.yaml` with the new image tag
+3. Updates `charts/${{ values.app_name }}/values.yaml` with the new image tag
 4. Commits and pushes the change back to git
-5. Installs ArgoCD CLI and triggers a sync of the `python-app` application
+5. Installs ArgoCD CLI and triggers a sync of the `${{ values.app_name }}` application
 
 ## Deployment
 
@@ -84,9 +84,9 @@ Defined in `.github/workflows/cicd.yaml`, triggered on push to `main` when files
 
 | Resource | Name | Details |
 |----------|------|---------|
-| Namespace | `cicd-app` | Application namespace |
-| Deployment | `python-app` | 1 replica, port 5000 |
-| Service | `python-app` | NodePort on 30100 |
+| Namespace | `${{ values.app_name }}-${{ values.app_env }}` | Application namespace |
+| Deployment | `${{ values.app_name }}` | 1 replica, port 5000 |
+| Service | `${{ values.app_name }}` | NodePort on 30100 |
 | Secret | `docker-registry-secret` | Docker Hub pull credentials (created manually) |
 | Ingress | nginx class, path `/` | |
 
@@ -98,23 +98,23 @@ kubectl apply -f k8s/namespace.yaml
 
 # Create Docker Hub secret
 kubectl create secret docker-registry docker-registry-secret \
-  --namespace=cicd-app \
+  --namespace=${{ values.app_name }}-${{ values.app_env }} \
   --docker-server=https://index.docker.io/v1/ \
   --docker-username=<username> \
   --docker-password=<token>
 
 # Deploy with Helm
-helm install python-app ./charts/python-app
+helm install ${{ values.app_name }} ./charts/${{ values.app_name }}
 ```
 
 ### Access the App
 
 ```bash
 # Via minikube
-minikube service python-app -n cicd-app
+minikube service ${{ values.app_name }} -n ${{ values.app_name }}-${{ values.app_env }}
 
 # Via port-forward
-kubectl port-forward -n cicd-app svc/python-app 8080:5000
+kubectl port-forward -n ${{ values.app_name }}-${{ values.app_env }} svc/${{ values.app_name }} 8080:5000
 
 # Via NodePort
 http://<minikube-ip>:30100/api/v1/details
@@ -124,7 +124,7 @@ http://<minikube-ip>:30100/api/v1/details
 
 The project includes a `catalog-info.yaml` for registering as a service in [Backstage](https://backstage.io):
 
-- **Name:** cicd-python-app
+- **Name:** ${{ values.app_name }}
 - **Type:** service
 - **Owner:** development
 - **Lifecycle:** experimental

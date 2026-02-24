@@ -11,7 +11,9 @@ def details():
         "hostname": socket.gethostname(),
         "ip": socket.gethostbyname(socket.gethostname()),
         "status": "up",
-        "message": "You are doing great!"
+        "message": "You are doing great!",
+        'env': '${{ values.app_env }}',
+        'app_name': '${{ values.app_name }}'
     })
 
 @app.route("/api/v1/healthz")
