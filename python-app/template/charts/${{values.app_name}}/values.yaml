@@ -46,10 +46,9 @@ securityContext: {}
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: NodePort
+  type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 5000
-  nodePort: 30100
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -57,14 +56,10 @@ ingress:
   className: "nginx"
 
   hosts:
-    - paths:
+    - host: ${{ values.app_name }}-${{ values.app_env }}.example.com
+      paths:
         - path: /
           pathType: Prefix
-          backend:
-            service:
-              name: ${{ values.app_name }}-service
-              port:
-                number: 8080
   tls: []
     # - secretName: chart-example-tls
     #   hosts:
