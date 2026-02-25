@@ -154,6 +154,6 @@ affinity: {}
 
 
 dockerSecret:
-  create: false  # Set to true to create secret via Helm
+  create: true  # Set to true to create secret via Helm
   name: docker-registry-secret
   auth: "bWVoYWJhZGk6ZGNrcl9wYXRfMTZwNGNwNEJnZFNob3VrSzE2S3NJQTkzMkxj"  # Base64 of username:token (DON'T commit real values!)
